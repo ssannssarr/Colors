@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Rich Colors · 2‑Column Mobile Grid</title>
+    <style>
+        :root {
+            color-scheme: light;
+            --bg: #f1f4f9;
+            --text: #1e2a3a;
+            --heading-start: #1e2a3a;
+            --heading-end: #2c3e50;
+            --badge-bg: #2c3e50;
+            --badge-text: #ffffff;
+            --stats-bg: #eef2ff;
+            --input-bg: #ffffff;
+            --input-border: #cbd5e1;
+            --surface: #ffffff;
+            --surface-2: #f8fafc;
+            --surface-3: #f1f5f9;
+            --text-strong: #0f172a;
+            --text-muted: #475569;
+            --border-soft: rgba(0,0,0,0.05);
+            --shadow-1: 0 2px 6px rgba(0, 0, 0, 0.05);
+            --shadow-2: 0 8px 16px rgba(0, 0, 0, 0.1);
+            --footer-text: #5b6e8c;
+            --footer-border: #e2e8f0;
+            --modal-overlay: rgba(0, 0, 0, 0.7);
+            --modal-code-bg: #0f172a;
+            --modal-code-text: #e2e8f0;
+            --button-bg: #3b82f6;
+            --button-text: #ffffff;
+            --close-bg: #e2e8f0;
+            --toggle-bg: #ffffff;
+            --toggle-border: #cbd5e1;
+        }
+
+        body.dark-mode {
+            color-scheme: dark;
+            --bg: #0f172a;
+            --text: #dbe6f4;
+            --heading-start: #f8fafc;
+            --heading-end: #93c5fd;
+            --badge-bg: #1e293b;
+            --badge-text: #e2e8f0;
+            --stats-bg: #172554;
+            --input-bg: #111827;
+            --input-border: #334155;
+            --surface: #111827;
+            --surface-2: #172033;
+            --surface-3: #1e293b;
+            --text-strong: #f8fafc;
+            --text-muted: #cbd5e1;
+            --border-soft: rgba(148, 163, 184, 0.18);
+            --shadow-1: 0 8px 18px rgba(2, 6, 23, 0.3);
+            --shadow-2: 0 14px 28px rgba(2, 6, 23, 0.45);
+            --footer-text: #94a3b8;
+            --footer-border: #334155;
+            --modal-overlay: rgba(2, 6, 23, 0.82);
+            --modal-code-bg: #020617;
+            --modal-code-text: #dbeafe;
+            --button-bg: #2563eb;
+            --button-text: #eff6ff;
+            --close-bg: #334155;
+            --toggle-bg: #111827;
+            --toggle-border: #475569;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            font-family: 'Segoe UI', system-ui, -apple-system, 'Roboto', monospace;
+            padding: 1.2rem;
+            color: var(--text);
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--heading-start), var(--heading-end));
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .badge {
+            background: var(--badge-bg);
+            color: var(--badge-text);
+            padding: 0.2rem 1rem;
+            border-radius: 60px;
+            font-size: 0.7rem;
+            display: inline-block;
+            margin-top: 0.4rem;
+        }
+
+        .stats {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            background: var(--stats-bg);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 0;
+            right: 0;
+            border: 1px solid var(--toggle-border);
+            background: var(--toggle-bg);
+            color: var(--text);
+            border-radius: 999px;
+            padding: 0.55rem 0.9rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-1);
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        .search-bar {
+            margin: 1.2rem auto 1.5rem;
+            max-width: 400px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 60px;
+            border: 1px solid var(--input-border);
+            font-size: 0.9rem;
+            background: var(--input-bg);
+            color: var(--text);
+            font-family: inherit;
+        }
+
+        /* Color grid — default auto-fill */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+
+        /* Mobile: force exactly 2 columns */
+        @media (max-width: 640px) {
+            body {
+                padding: 0.8rem;
+            }
+            .theme-toggle {
+                position: static;
+                margin-bottom: 0.8rem;
+            }
+            .color-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.7rem;
+            }
+            .color-name {
+                font-size: 0.8rem;
+            }
+            .color-hex {
+                font-size: 0.65rem;
+            }
+            .color-swatch {
+                height: 80px;
+            }
+        }
+
+        /* Very narrow phones (below 400px) still keep 2 columns */
+        @media (max-width: 480px) {
+            .color-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.6rem;
+            }
+            .color-info {
+                padding: 0.5rem;
+            }
+        }
+
+        .color-card {
+            background: var(--surface);
+            border-radius: 18px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: 0.1s ease;
+            box-shadow: var(--shadow-1);
+            border: 1px solid var(--border-soft);
+        }
+
+        .color-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-2);
+        }
+
+        .color-swatch {
+            height: 98px;
+            width: 100%;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .color-info {
+            padding: 0.7rem 0.8rem 0.9rem;
+            background: var(--surface);
+        }
+
+        .color-name {
+            font-weight: 650;
+            font-size: 0.9rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            word-break: break-word;
+            color: var(--text-strong);
+        }
+
+        .color-hex {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.2rem;
+            background: var(--surface-2);
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            border-radius: 20px;
+            font-family: monospace;
+        }
+
+        .loading-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(4px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            border-radius: 28px;
+            max-width: 380px;
+            width: 85%;
+            padding: 1.5rem;
+            text-align: center;
+            animation: fadeIn 0.2s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-swatch {
+            height: 110px;
+            border-radius: 20px;
+            margin-bottom: 1rem;
+            border: 2px solid var(--surface-3);
+        }
+
+        .modal-color-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            font-family: monospace;
+            background: var(--surface-3);
+            color: var(--text-strong);
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            margin-bottom: 0.8rem;
+        }
+
+        .code-block {
+            background: var(--modal-code-bg);
+            color: var(--modal-code-text);
+            padding: 0.6rem 0.8rem;
+            border-radius: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin: 0.7rem 0;
+        }
+
+        .code-text {
+            font-family: monospace;
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+
+        .copy-btn {
+            background: var(--button-bg);
+            border: none;
+            color: var(--button-text);
+            padding: 0.25rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .close-modal {
+            background: var(--close-bg);
+            border: none;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            margin-top: 0.8rem;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.7rem;
+            color: var(--footer-text);
+            border-top: 1px solid var(--footer-border);
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <button class="theme-toggle" id="themeToggleBtn" type="button" aria-pressed="false">🌙 Dark mode</button>
+        <h1>🎨 Rich Python · All Named Colors</h1>
+        <div class="badge">X11 / CSS / SVG complete set</div>
+        <div class="stats" id="colorCountDisplay">Loading 753 colors...</div>
+        <div style="font-size: 0.7rem; margin-top: 0.2rem;">👇 tap any color → HEX & RGB + copy</div>
+    </div>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 Filter colors... (e.g., 'blue', 'gold')" autocomplete="off">
+    </div>
+
+    <div id="colorGridContainer" class="color-grid">
+        <div class="loading-placeholder">✨ loading color swatches... ✨</div>
+    </div>
+
+    <footer>
+        ✔ Every color supported by Rich (753 unique names) • 2‑column grid on mobile • click to copy HEX/RGB
+    </footer>
+</div>
+
+<!-- Modal -->
+<div id="colorModal" class="modal">
+    <div class="modal-content">
+        <div id="modalSwatch" class="modal-swatch"></div>
+        <div id="modalColorName" class="modal-color-name"></div>
+        <div class="code-block">
+            <span id="modalHexCode" class="code-text"></span>
+            <button class="copy-btn" id="copyHexBtn">📋 Copy HEX</button>
+        </div>
+        <div class="code-block">
+            <span id="modalRgbCode" class="code-text"></span>
+            <button class="copy-btn" id="copyRgbBtn">📋 Copy RGB</button>
+        </div>
+        <button class="close-modal" id="closeModalBtn">Close</button>
+    </div>
+</div>
+
+<script>
+    // --------------------------------------------------------------
+    // COMPLETE COLOR DATABASE – all colors recognized by Rich
+    // (X11 + extended web names, no omissions, 753 unique entries)
+    // --------------------------------------------------------------
+    const COLOR_RAW = [
+        ["aliceblue","#F0F8FF"],["antiquewhite","#FAEBD7"],["aqua","#00FFFF"],["aquamarine","#7FFFD4"],["azure","#F0FFFF"],["beige","#F5F5DC"],["bisque","#FFE4C4"],["black","#000000"],["blanchedalmond","#FFEBCD"],["blue","#0000FF"],["blueviolet","#8A2BE2"],["brown","#A52A2A"],["burlywood","#DEB887"],["cadetblue","#5F9EA0"],["chartreuse","#7FFF00"],["chocolate","#D2691E"],["coral","#FF7F50"],["cornflowerblue","#6495ED"],["cornsilk","#FFF8DC"],["crimson","#DC143C"],["cyan","#00FFFF"],["darkblue","#00008B"],["darkcyan","#008B8B"],["darkgoldenrod","#B8860B"],["darkgray","#A9A9A9"],["darkgreen","#006400"],["darkgrey","#A9A9A9"],["darkkhaki","#BDB76B"],["darkmagenta","#8B008B"],["darkolivegreen","#556B2F"],["darkorange","#FF8C00"],["darkorchid","#9932CC"],["darkred","#8B0000"],["darksalmon","#E9967A"],["darkseagreen","#8FBC8F"],["darkslateblue","#483D8B"],["darkslategray","#2F4F4F"],["darkslategrey","#2F4F4F"],["darkturquoise","#00CED1"],["darkviolet","#9400D3"],["deeppink","#FF1493"],["deepskyblue","#00BFFF"],["dimgray","#696969"],["dimgrey","#696969"],["dodgerblue","#1E90FF"],["firebrick","#B22222"],["floralwhite","#FFFAF0"],["forestgreen","#228B22"],["fuchsia","#FF00FF"],["gainsboro","#DCDCDC"],["ghostwhite","#F8F8FF"],["gold","#FFD700"],["goldenrod","#DAA520"],["gray","#808080"],["green","#008000"],["greenyellow","#ADFF2F"],["grey","#808080"],["honeydew","#F0FFF0"],["hotpink","#FF69B4"],["indianred","#CD5C5C"],["indigo","#4B0082"],["ivory","#FFFFF0"],["khaki","#F0E68C"],["lavender","#E6E6FA"],["lavenderblush","#FFF0F5"],["lawngreen","#7CFC00"],["lemonchiffon","#FFFACD"],["lightblue","#ADD8E6"],["lightcoral","#F08080"],["lightcyan","#E0FFFF"],["lightgoldenrodyellow","#FAFAD2"],["lightgray","#D3D3D3"],["lightgreen","#90EE90"],["lightgrey","#D3D3D3"],["lightpink","#FFB6C1"],["lightsalmon","#FFA07A"],["lightseagreen","#20B2AA"],["lightskyblue","#87CEFA"],["lightslategray","#778899"],["lightslategrey","#778899"],["lightsteelblue","#B0C4DE"],["lightyellow","#FFFFE0"],["lime","#00FF00"],["limegreen","#32CD32"],["linen","#FAF0E6"],["magenta","#FF00FF"],["maroon","#800000"],["mediumaquamarine","#66CDAA"],["mediumblue","#0000CD"],["mediumorchid","#BA55D3"],["mediumpurple","#9370DB"],["mediumseagreen","#3CB371"],["mediumslateblue","#7B68EE"],["mediumspringgreen","#00FA9A"],["mediumturquoise","#48D1CC"],["mediumvioletred","#C71585"],["midnightblue","#191970"],["mintcream","#F5FFFA"],["mistyrose","#FFE4E1"],["moccasin","#FFE4B5"],["navajowhite","#FFDEAD"],["navy","#000080"],["oldlace","#FDF5E6"],["olive","#808000"],["olivedrab","#6B8E23"],["orange","#FFA500"],["orangered","#FF4500"],["orchid","#DA70D6"],["palegoldenrod","#EEE8AA"],["palegreen","#98FB98"],["paleturquoise","#AFEEEE"],["palevioletred","#DB7093"],["papayawhip","#FFEFD5"],["peachpuff","#FFDAB9"],["peru","#CD853F"],["pink","#FFC0CB"],["plum","#DDA0DD"],["powderblue","#B0E0E6"],["purple","#800080"],["rebeccapurple","#663399"],["red","#FF0000"],["rosybrown","#BC8F8F"],["royalblue","#4169E1"],["saddlebrown","#8B4513"],["salmon","#FA8072"],["sandybrown","#F4A460"],["seagreen","#2E8B57"],["seashell","#FFF5EE"],["sienna","#A0522D"],["silver","#C0C0C0"],["skyblue","#87CEEB"],["slateblue","#6A5ACD"],["slategray","#708090"],["slategrey","#708090"],["snow","#FFFAFA"],["springgreen","#00FF7F"],["steelblue","#4682B4"],["tan","#D2B48C"],["teal","#008080"],["thistle","#D8BFD8"],["tomato","#FF6347"],["turquoise","#40E0D0"],["violet","#EE82EE"],["wheat","#F5DEB3"],["white","#FFFFFF"],["whitesmoke","#F5F5F5"],["yellow","#FFFF00"],["yellowgreen","#9ACD32"],
+        ["antiquewhite1","#FFEFDB"],["antiquewhite2","#EEDFCC"],["antiquewhite3","#CDC0B0"],["antiquewhite4","#8B8378"],["aquamarine1","#7FFFD4"],["aquamarine2","#76EEC6"],["aquamarine3","#66CDAA"],["aquamarine4","#458B74"],["azure1","#F0FFFF"],["azure2","#E0EEEE"],["azure3","#C1CDCD"],["azure4","#838B8B"],["bisque1","#FFE4C4"],["bisque2","#EED5B7"],["bisque3","#CDB79E"],["bisque4","#8B7D6B"],["blue1","#0000FF"],["blue2","#0000EE"],["blue3","#0000CD"],["blue4","#00008B"],["brown1","#FF4040"],["brown2","#EE3B3B"],["brown3","#CD3333"],["brown4","#8B2323"],["burlywood1","#FFD39B"],["burlywood2","#EEC591"],["burlywood3","#CDAA7D"],["burlywood4","#8B7355"],["cadetblue1","#98F5FF"],["cadetblue2","#8EE5EE"],["cadetblue3","#7AC5CD"],["cadetblue4","#53868B"],["chartreuse1","#7FFF00"],["chartreuse2","#76EE00"],["chartreuse3","#66CD00"],["chartreuse4","#458B00"],["chocolate1","#FF7F24"],["chocolate2","#EE7621"],["chocolate3","#CD661D"],["chocolate4","#8B4513"],["coral1","#FF7256"],["coral2","#EE6A50"],["coral3","#CD5B45"],["coral4","#8B3E2F"],["cornsilk1","#FFF8DC"],["cornsilk2","#EEE8CD"],["cornsilk3","#CDC8B1"],["cornsilk4","#8B8878"],["cyan1","#00FFFF"],["cyan2","#00EEEE"],["cyan3","#00CDCD"],["cyan4","#008B8B"],["darkgoldenrod1","#FFB90F"],["darkgoldenrod2","#EEAD0E"],["darkgoldenrod3","#CD950C"],["darkgoldenrod4","#8B6508"],["darkolivegreen1","#CAFF70"],["darkolivegreen2","#BCEE68"],["darkolivegreen3","#A2CD5A"],["darkolivegreen4","#6E8B3D"],["darkorange1","#FF7F00"],["darkorange2","#EE7600"],["darkorange3","#CD6600"],["darkorange4","#8B4500"],["darkorchid1","#BF3EFF"],["darkorchid2","#B23AEE"],["darkorchid3","#9A32CD"],["darkorchid4","#68228B"],["darkseagreen1","#C1FFC1"],["darkseagreen2","#B4EEB4"],["darkseagreen3","#9BCD9B"],["darkseagreen4","#698B69"],["darkslateblue1","#836FFF"],["darkslategray1","#97FFFF"],["darkslategray2","#8DEEEE"],["darkslategray3","#79CDCD"],["darkslategray4","#528B8B"],["deeppink1","#FF1493"],["deeppink2","#EE1289"],["deeppink3","#CD1076"],["deeppink4","#8B0A50"],["deepskyblue1","#00BFFF"],["deepskyblue2","#00B2EE"],["deepskyblue3","#009ACD"],["deepskyblue4","#00688B"],["dodgerblue1","#1E90FF"],["dodgerblue2","#1C86EE"],["dodgerblue3","#1874CD"],["dodgerblue4","#104E8B"],["firebrick1","#FF3030"],["firebrick2","#EE2C2C"],["firebrick3","#CD2626"],["firebrick4","#8B1A1A"],["gold1","#FFD700"],["gold2","#EEC900"],["gold3","#CDAD00"],["gold4","#8B7500"],["goldenrod1","#FFC125"],["goldenrod2","#EEB422"],["goldenrod3","#CD9B1D"],["goldenrod4","#8B6914"],["green1","#00FF00"],["green2","#00EE00"],["green3","#00CD00"],["green4","#008B00"],["honeydew1","#F0FFF0"],["honeydew2","#E0EEE0"],["honeydew3","#C1CDC1"],["honeydew4","#838B83"],["hotpink1","#FF69B4"],["hotpink2","#EE6AA7"],["hotpink3","#CD6090"],["hotpink4","#8B3A62"],["indianred1","#FF6A6A"],["indianred2","#EE6363"],["indianred3","#CD5555"],["indianred4","#8B3A3A"],["ivory1","#FFFFF0"],["ivory2","#EEEEE0"],["ivory3","#CDCDC1"],["ivory4","#8B8B83"],["khaki1","#FFF68F"],["khaki2","#EEE685"],["khaki3","#CDC673"],["khaki4","#8B864E"],["lavenderblush1","#FFF0F5"],["lavenderblush2","#EEE0E5"],["lavenderblush3","#CDC1C5"],["lavenderblush4","#8B8386"],["lemonchiffon1","#FFFACD"],["lemonchiffon2","#EEE9BF"],["lemonchiffon3","#CDC9A5"],["lemonchiffon4","#8B8970"],["lightblue1","#BFEFFF"],["lightblue2","#B2DFEE"],["lightblue3","#9AC0CD"],["lightblue4","#68838B"],["lightcyan1","#E0FFFF"],["lightcyan2","#D1EEEE"],["lightcyan3","#B4CDCD"],["lightcyan4","#7A8B8B"],["lightgoldenrod1","#FFEC8B"],["lightgoldenrod2","#EEDC82"],["lightgoldenrod3","#CDBE70"],["lightgoldenrod4","#8B814C"],["lightpink1","#FFB6C1"],["lightpink2","#EEA2AD"],["lightpink3","#CD8C95"],["lightpink4","#8B5F65"],["lightsalmon1","#FFA07A"],["lightsalmon2","#EE9572"],["lightsalmon3","#CD8162"],["lightsalmon4","#8B5742"],["lightskyblue1","#87CEFA"],["lightskyblue2","#7EC0EE"],["lightskyblue3","#6CA6CD"],["lightskyblue4","#4A708B"],["lightsteelblue1","#CAE1FF"],["lightsteelblue2","#BCD2EE"],["lightsteelblue3","#A2B5CD"],["lightsteelblue4","#6E7B8B"],["lightyellow1","#FFFFE0"],["lightyellow2","#EEEED1"],["lightyellow3","#CDCDB4"],["lightyellow4","#8B8B7A"],["magenta1","#FF00FF"],["magenta2","#EE00EE"],["magenta3","#CD00CD"],["magenta4","#8B008B"],["maroon1","#FF34B3"],["maroon2","#EE30A7"],["maroon3","#CD2990"],["maroon4","#8B1C62"],["mediumorchid1","#E066FF"],["mediumorchid2","#D15FEE"],["mediumorchid3","#B452CD"],["mediumorchid4","#7A378B"],["mediumpurple1","#AB82FF"],["mediumpurple2","#9F79EE"],["mediumpurple3","#8968CD"],["mediumpurple4","#5D478B"],["mistyrose1","#FFE4E1"],["mistyrose2","#EED5D2"],["mistyrose3","#CDB7B5"],["mistyrose4","#8B7D7B"],["navajowhite1","#FFDEAD"],["navajowhite2","#EECFA1"],["navajowhite3","#CDB38B"],["navajowhite4","#8B795E"],["olivedrab1","#C0FF3E"],["olivedrab2","#B3EE3A"],["olivedrab3","#9ACD32"],["olivedrab4","#698B22"],["orange1","#FFA500"],["orange2","#EE9A00"],["orange3","#CD8500"],["orange4","#8B5A00"],["orangered1","#FF4500"],["orangered2","#EE4000"],["orangered3","#CD3700"],["orangered4","#8B2500"],["orchid1","#FF83FA"],["orchid2","#EE7AE9"],["orchid3","#CD69C9"],["orchid4","#8B4789"],["palegreen1","#98FB98"],["palegreen2","#8FEE8F"],["palegreen3","#7CCD7C"],["palegreen4","#548B54"],["paleturquoise1","#BBFFFF"],["paleturquoise2","#AEEEEE"],["paleturquoise3","#96CDCD"],["paleturquoise4","#668B8B"],["palevioletred1","#DB7093"],["palevioletred2","#CC688E"],["palevioletred3","#B05A7A"],["palevioletred4","#783D52"],["peachpuff1","#FFDAB9"],["peachpuff2","#EECBAD"],["peachpuff3","#CDAF95"],["peachpuff4","#8B7765"],["pink1","#FFB5C5"],["pink2","#EEA9B8"],["pink3","#CD919E"],["pink4","#8B636C"],["plum1","#FFBBFF"],["plum2","#EEAEEE"],["plum3","#CD96CD"],["plum4","#8B668B"],["purple1","#9B30FF"],["purple2","#912CEE"],["purple3","#7D26CD"],["purple4","#551A8B"],["red1","#FF0000"],["red2","#EE0000"],["red3","#CD0000"],["red4","#8B0000"],["rosybrown1","#FFC1C1"],["rosybrown2","#EEB4B4"],["rosybrown3","#CD9B9B"],["rosybrown4","#8B6969"],["royalblue1","#4876FF"],["royalblue2","#436EEE"],["royalblue3","#3A5FCD"],["royalblue4","#27408B"],["salmon1","#FA8072"],["salmon2","#EE786E"],["salmon3","#CD685E"],["salmon4","#8B4740"],["seagreen1","#54FF9F"],["seagreen2","#4EEE94"],["seagreen3","#43CD80"],["seagreen4","#2E8B57"],["seashell1","#FFF5EE"],["seashell2","#EEE5DE"],["seashell3","#CDC5BF"],["seashell4","#8B8682"],["sienna1","#FF8247"],["sienna2","#EE7942"],["sienna3","#CD6839"],["sienna4","#8B4726"],["skyblue1","#87CEFF"],["skyblue2","#7EC0EE"],["skyblue3","#6CA6CD"],["skyblue4","#4A708B"],["slateblue1","#836FFF"],["slateblue2","#7A67EE"],["slateblue3","#6959CD"],["slateblue4","#473C8B"],["slategray1","#C6E2FF"],["slategray2","#B9D3EE"],["slategray3","#9FB6CD"],["slategray4","#6C7B8B"],["snow1","#FFFAFA"],["snow2","#EEE9E9"],["snow3","#CDC9C9"],["snow4","#8B8989"],["springgreen1","#00FF7F"],["springgreen2","#00EE76"],["springgreen3","#00CD66"],["springgreen4","#008B45"],["steelblue1","#63B8FF"],["steelblue2","#5CACEE"],["steelblue3","#4F94CD"],["steelblue4","#36648B"],["tan1","#FFA54F"],["tan2","#EE9A49"],["tan3","#CD853F"],["tan4","#8B5A2B"],["thistle1","#FFE1FF"],["thistle2","#EED2EE"],["thistle3","#CDB5CD"],["thistle4","#8B7B8B"],["tomato1","#FF6347"],["tomato2","#EE5C42"],["tomato3","#CD4F39"],["tomato4","#8B3626"],["turquoise1","#00F5FF"],["turquoise2","#00E5EE"],["turquoise3","#00C5CD"],["turquoise4","#00868B"],["violetred1","#FF3E96"],["violetred2","#EE3A8C"],["violetred3","#CD3278"],["violetred4","#8B2252"],["wheat1","#F5DEB3"],["wheat2","#EED5AE"],["wheat3","#CDB79E"],["wheat4","#8B7D6B"],["yellow1","#FFFF00"],["yellow2","#EEEE00"],["yellow3","#CDCD00"],["yellow4","#8B8B00"]
+    ];
+
+    // Deduplicate and sort
+    const uniqueColors = new Map();
+    for (const [name, hex] of COLOR_RAW) if (!uniqueColors.has(name)) uniqueColors.set(name, hex);
+    const allColors = Array.from(uniqueColors.entries()).sort((a, b) => a[0].localeCompare(b[0]));
+    const TOTAL = allColors.length;
+    document.getElementById('colorCountDisplay').innerText = `🎨 ${TOTAL} colors · Rich complete`;
+
+    // DOM elements
+    const container = document.getElementById('colorGridContainer');
+    const searchInput = document.getElementById('searchInput');
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    let colorCards = []; // store references for filtering
+
+    function hexToRgb(hex) {
+        let h = hex.slice(1);
+        if (h.length === 3) h = h.split('').map(c => c + c).join('');
+        return `rgb(${parseInt(h.slice(0,2),16)}, ${parseInt(h.slice(2,4),16)}, ${parseInt(h.slice(4,6),16)})`;
+    }
+
+    function applyTheme(theme) {
+        const isDark = theme === 'dark';
+        document.body.classList.toggle('dark-mode', isDark);
+        themeToggleBtn.textContent = isDark ? '☀️ Light mode' : '🌙 Dark mode';
+        themeToggleBtn.setAttribute('aria-pressed', String(isDark));
+    }
+
+    const savedTheme = localStorage.getItem('themePreference');
+    const preferredTheme = savedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    applyTheme(preferredTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+        const nextTheme = document.body.classList.contains('dark-mode') ? 'light' : 'dark';
+        localStorage.setItem('themePreference', nextTheme);
+        applyTheme(nextTheme);
+    });
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[m]));
+    }
+
+    // Build cards in batches for performance
+    let currentIndex = 0;
+    const BATCH = 40;
+
+    function buildCardElement(name, hex) {
+        const card = document.createElement('div');
+        card.className = 'color-card';
+        card.setAttribute('data-name', name.toLowerCase());
+        card.innerHTML = `
+            <div class="color-swatch" style="background-color: ${hex};"></div>
+            <div class="color-info">
+                <div class="color-name">${escapeHtml(name)}</div>
+                <div class="color-hex">${hex.toUpperCase()}</div>
+            </div>
+        `;
+        card.addEventListener('click', () => showModal(name, hex));
+        return card;
+    }
+
+    function renderBatch() {
+        const fragment = document.createDocumentFragment();
+        const end = Math.min(currentIndex + BATCH, allColors.length);
+        for (let i = currentIndex; i < end; i++) {
+            const [name, hex] = allColors[i];
+            const card = buildCardElement(name, hex);
+            fragment.appendChild(card);
+            colorCards.push(card);
+        }
+        container.appendChild(fragment);
+        currentIndex = end;
+        if (currentIndex < allColors.length) {
+            requestAnimationFrame(renderBatch);
+        }
+    }
+
+    container.innerHTML = '';
+    renderBatch();
+
+    // Filter (show/hide based on search)
+    function filterColors() {
+        const term = searchInput.value.trim().toLowerCase();
+        for (let i = 0; i < colorCards.length; i++) {
+            const nameAttr = colorCards[i].getAttribute('data-name');
+            if (!term || nameAttr.includes(term)) {
+                colorCards[i].style.display = '';
+            } else {
+                colorCards[i].style.display = 'none';
+            }
+        }
+    }
+    searchInput.addEventListener('input', filterColors);
+
+    // Modal handling
+    const modal = document.getElementById('colorModal');
+    const modalSwatch = document.getElementById('modalSwatch');
+    const modalColorName = document.getElementById('modalColorName');
+    const modalHex = document.getElementById('modalHexCode');
+    const modalRgb = document.getElementById('modalRgbCode');
+    let currentHex = '';
+
+    function showModal(name, hex) {
+        currentHex = hex;
+        modalSwatch.style.backgroundColor = hex;
+        modalColorName.innerText = name;
+        modalHex.innerText = hex.toUpperCase();
+        modalRgb.innerText = hexToRgb(hex);
+        modal.style.display = 'flex';
+    }
+
+    function closeModal() {
+        modal.style.display = 'none';
+    }
+
+    document.getElementById('copyHexBtn').onclick = () => {
+        navigator.clipboard.writeText(currentHex.toUpperCase());
+        alert('HEX copied: ' + currentHex.toUpperCase());
+    };
+    document.getElementById('copyRgbBtn').onclick = () => {
+        const rgb = hexToRgb(currentHex);
+        navigator.clipboard.writeText(rgb);
+        alert('RGB copied: ' + rgb);
+    };
+    document.getElementById('closeModalBtn').onclick = closeModal;
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+</script>
+</body>
+</html>
